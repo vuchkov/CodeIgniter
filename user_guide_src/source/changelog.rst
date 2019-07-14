@@ -2,12 +2,40 @@
 Change Log
 ##########
 
-Version 3.1.10
+Version 3.1.11
 ==============
+
+Release Date: Not Released
 
 -  General Changes
 
-   -  Added 'ssl_verify' support to the 'pdo/mysql' :doc:`Database <database/index> driver.
+   -  Changed ``CI_Log`` to append ``PHP_EOL`` instead of ``\n`` at the end of log messages.
+   -  Improved performance in :doc:`Cache Library <libraries/caching>` 'redis' driver with non-scalar variables.
+   -  Altered the :doc:`Session Library <libraries/session>` 'files' driver to log error and trigger a session start failure instead of throwing an ``Exception`` in case of unusable ``$config['sess_save_path']``.
+
+Bug fixes for 3.1.11
+====================
+
+-  Fixed a bug (#5681) - :doc:`Database Forge <database/forge>` method ``modify_column()`` produced erroneous SQL for ``DEFAULT`` attribute changes under PostgreSQL, Firebird.
+-  Fixed a bug (#5692) - :doc:`Database Forge <database/forge>` didn't handle column nullability with the 'oci8', 'pdo/oci' drivers.
+-  Fixed a bug (#5701) - :doc:`Database <database/index>` driver 'pdo/pgsql' produced incorrect DSNs when constructing from a configuration array.
+-  Fixed a bug (#5708) - :doc:`Session Library <libraries/session>` 'redis' driver too often failed with locking-related errors that could've been avoided.
+-  Fixed a bug (#5703) - :doc:`Session Library <libraries/session>` triggered an ``E_WARNING`` message about changing ``session.save_path`` during an active session when it fails to obtain a lock.
+-  Fixed a bug where :doc:`Session Library <libraries/session>` 'database' driver didn't trigger a failure if it can't obtain a lock.
+-  Fixed a bug (#5755) - :doc:`Form Validation Library <libraries/form_validation>` rule **valid_url** accepted digit-only domains due to a PHP bug.
+-  Fixed a bug (#5753) - :doc:`Cache Library <libraries/caching>` 'redis' driver methods ``increment()``, ``decrement()`` ignored their ``$offset`` parameter.
+-  Fixed a bug (#5779) - :doc:`Session Library <libraries/session>` 'redis' only attempted to validate session IDs in case the connection to Redis failed.
+-  Fixed a bug (#5774) - :doc:`Database Results <database/results>` method ``custom_result_object()`` didn't properly handle empty result sets, triggering ``E_WARNING`` messages on PHP 7.2+.
+
+Version 3.1.10
+==============
+
+Release Date: Jan 16, 2019
+
+-  General Changes
+
+   -  Added 'ssl_verify' support to the 'pdo/mysql' :doc:`Database <database/index>` driver.
+   -  Renamed :doc:`Inflector Helper <helpers/inflector_helper>` function ``is_countable()`` to :php:func:`word_is_countable()` due to the former colliding with one introduced in PHP 7.3.0.
 
 Bug fixes for 3.1.10
 --------------------
@@ -19,6 +47,11 @@ Bug fixes for 3.1.10
 -  Fixed a bug (#5571) - :doc:`XML-RPC Library <libraries/xmlrpc>` had a typo that triggered an ``E_WARNING`` message on PHP 7.2.
 -  Fixed a bug (#5587) - :doc:`Database Forge <database/forge>` method ``create_table()`` generated an ``E_WARNING`` message.
 -  Fixed a bug (#5590) - :doc:`Form Validation Library <libraries/form_validation>` rule **valid_base64** didn't have a default error message.
+-  Fixed a bug (#5624) - :doc:`Database Library <database/index>` methods ``list_fields()``, ``field_exists()`` returned incorrect results after tables are modified.
+-  Fixed a bug (#5627) - :doc:`Database <database/index>` driver 'mysqli' triggered an ``E_WARNING`` message if there's no ``'port'`` specified in the database configuration.
+-  Fixed a bug (#5651) - :doc:`Database Caching <database/caching>` could try to delete non-existent cache files due to a race condition.
+-  Fixed a bug (#5652) - :doc:`CAPTCHA Helper <helpers/captcha_helper>` function :php:func:`create_captcha()` didn't comply with CSS standards.
+-  Fixed a bug (#5605) - :doc:`Form Validation Library <libraries/form_validation>` didn't nullify array inputs that are expected to be strings.
 
 Version 3.1.9
 =============
@@ -259,7 +292,7 @@ Release Date: Oct 22, 2016
 -  General Changes
 
    -  Added ``E_PARSE`` to the list of error levels detected by the shutdown handler.
-   -  Updated :doc:`Inflector Helper <helpers/inflector_helper>` :php:func:`is_countable()` with more words.
+   -  Updated :doc:`Inflector Helper <helpers/inflector_helper>` ``is_countable()`` with more words.
    -  Updated :doc:`common function <general/common_functions>` :php:func:`set_status_header()` with new status codes from IETF RFCs
       `2817 <https://tools.ietf.org/html/rfc2817>`_ (426)
       and `6585 <https://tools.ietf.org/html/rfc6585>`_ (428, 429, 431, 511).
